@@ -36,6 +36,10 @@ class UnitOfMeasure(models.Model):
   def __str__(self):
     return self.name
 
+class NutrientUnit(models.Model):
+  nutrient_name = models.TextField()
+  unit = models.ForeignKey(UnitOfMeasure, on_delete=models.CASCADE)
+
 class Consumable(models.Model):
   fat = models.FloatField()
   saturated_fat = models.FloatField()
