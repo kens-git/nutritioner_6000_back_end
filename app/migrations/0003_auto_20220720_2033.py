@@ -61,12 +61,10 @@ def populate_initial_data(apps, schema_editor):
   NutrientUnit = apps.get_model('app', 'NutrientUnit')
   DailyValue = apps.get_model('app', 'DailyValue')
   for nutrient in NUTRIENTS:
-    print(nutrient)
     data = NUTRIENTS[nutrient]
     NutrientUnit(nutrient_name=nutrient,
       unit=UnitOfMeasure.objects.filter(name=data[0]).first()).save()
     if(len(data) == 2):
-      print(data[1])
       DailyValue(nutrient_name=nutrient, value=data[1]).save()
 
 class Migration(migrations.Migration):
