@@ -2,33 +2,6 @@ from django.conf import settings
 from django.db import models
 from django.forms import JSONField
 
-NUTRIENT_DAILY_VALUES = {
-  "biotin": 30,
-  "calcium": 1100,
-  "chromium": 120,
-  "copper": 2,
-  "folacin": 220,
-  "iodide": 160,
-  "iron": 14,
-  "magnesium": 250,
-  "manganese": 2,
-  "molybdenum": 75,
-  "niacin": 23,
-  "pantothenate": 7,
-  "phosphorous": 1100,
-  "potassium": 3500,
-  "riboflavin": 1.6,
-  "selenium": 50,
-  "thiamine": 1.3,
-  "vitamin_a": 1000,
-  "vitamin_b6": 1.8,
-  "vitamin_b12": 2,
-  "vitamin_c": 60,
-  "vitamin_d": 5,
-  "vitamin_e": 10,
-  "zinc": 9,
-}
-
 class UnitOfMeasure(models.Model):
   name = models.TextField(unique=True) # TODO: case insensitive
   abbreviation = models.TextField(unique=True) # TODO: case insensitive
@@ -39,6 +12,10 @@ class UnitOfMeasure(models.Model):
 class NutrientUnit(models.Model):
   nutrient_name = models.TextField()
   unit = models.ForeignKey(UnitOfMeasure, on_delete=models.CASCADE)
+
+class DailyValue(models.Model):
+  nutrient_name = models.TextField()
+  value = models.FloatField()
 
 class Consumable(models.Model):
   fat = models.FloatField()
