@@ -1,0 +1,97 @@
+<div class="table-responsive">
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Food Name</th>
+        <th>Category</th>
+        <th>Serving Size</th>
+        <th>Unit</th>
+        <!-- TODO: column headers names, units -->
+        <th>Fat (g)</th>
+        <th>Saturated Fat (g)</th>
+        <th>Trans Fat (g)</th>
+        <th>Cholesterol</th>
+        <th>Sodium</th>
+        <th>Carbohydrates</th>
+        <th>Fibre</th>
+        <th>Sugar</th>
+        <th>Protein</th>
+        <th>Biotin</th>
+        <th>Calcium</th>
+        <th>Chromium</th>
+        <th>Copper</th>
+        <th>Folacin</th>
+        <th>Iodide</th>
+        <th>Iron</th>
+        <th>Magnesium</th>
+        <th>Manganese</th>
+        <th>Molybdenum</th>
+        <th>Niacin</th>
+        <th>Pantothenate</th>
+        <th>Phosphorous</th>
+        <th>Potassium</th>
+        <th>Riboflavin (B?)</th>
+        <th>Selenium</th>
+        <th>Thiamine</th>
+        <th>Vitamin A</th>
+        <th>Vitamin B6</th>
+        <th>Vitamin B12</th>
+        <th>Vitamin C</th>
+        <th>Vitamin D</th>
+        <th>Vitamin E</th>
+        <th>Zinc</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for intake in intake_data %}
+        {% if intake.food_name %}
+          <tr>
+          <td>{{ intake.food_name }}</td>
+          <td>{{ intake.category }}</td>
+          <td>{{ intake.serving_size }}</td>
+          <td>{{ intake.unit }}</td>
+        {% else %}
+          <tr class="table-success">
+            <td>Total</td>
+            <td></td>
+            <td></td>
+            <td></td>
+        {% endif %}
+        <td>{{ intake.fat|floatformat:-2 }}</td>
+        <td>{{ intake.saturated_fat|floatformat:-2 }}</td>
+        <td>{{ intake.trans_fat|floatformat:-2 }}</td>
+        <td>{{ intake.cholesterol|floatformat:-2 }}</td>
+        <td>{{ intake.sodium|floatformat:-2 }}</td>
+        <td>{{ intake.carbohydrates|floatformat:-2 }}</td>
+        <td>{{ intake.fibre|floatformat:-2 }}</td>
+        <td>{{ intake.sugar|floatformat:-2 }}</td>
+        <td>{{ intake.protein|floatformat:-2 }}</td>
+        <td>{{ intake.biotin|floatformat:-2 }}</td>
+        <td>{{ intake.calcium|floatformat:-2 }}</td>
+        <td>{{ intake.chromium|floatformat:-2 }}</td>
+        <td>{{ intake.copper|floatformat:-2 }}</td>
+        <td>{{ intake.folacin|floatformat:-2 }}</td>
+        <td>{{ intake.iodide|floatformat:-2 }}</td>
+        <td>{{ intake.iron|floatformat:-2 }}</td>
+        <td>{{ intake.magnesium|floatformat:-2 }}</td>
+        <td>{{ intake.manganese|floatformat:-2 }}</td>
+        <td>{{ intake.molybdenum|floatformat:-2 }}</td>
+        <td>{{ intake.niacin|floatformat:-2 }}</td>
+        <td>{{ intake.pantothenate|floatformat:-2 }}</td>
+        <td>{{ intake.phosphorous|floatformat:-2 }}</td>
+        <td>{{ intake.potassium|floatformat:-2 }}</td>
+        <td>{{ intake.riboflavin|floatformat:-2 }}</td>
+        <td>{{ intake.selenium|floatformat:-2 }}</td>
+        <td>{{ intake.thiamine|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_a|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_b6|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_b12|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_c|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_d|floatformat:-2 }}</td>
+        <td>{{ intake.vitamin_e|floatformat:-2 }}</td>
+        <td>{{ intake.zinc|floatformat:-2 }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>

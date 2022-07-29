@@ -1,0 +1,13 @@
+{% extends 'app/base.html' %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{% block content %}
+<h1 class="display-5">Add new food</h1>
+<form action="{% url 'food' %}" method="post">
+  {% csrf_token %}
+  {% bootstrap_form food_form %}
+  <input type="submit" value="Submit" class="btn btn-primary btn-lg">
+</form>
+{% endblock %}

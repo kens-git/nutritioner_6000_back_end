@@ -1,0 +1,25 @@
+{% load bootstrap5 %}
+{% bootstrap_css %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{% block title %}Nutrition Tracker{% endblock %}</title>
+  </head>
+  <body>
+    <ul class="nav justify-content-center py-3">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'target' %}">Set Targets</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'food' %}">Add Food</a>
+      </li>
+    </ul>
+    <div class="container">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+</html>
