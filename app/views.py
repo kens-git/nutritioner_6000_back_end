@@ -1,5 +1,6 @@
 from copyreg import add_extension
 from datetime import datetime, date, time
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -50,12 +51,12 @@ def empty_nutrient_dict():
   }
 
 # TODO: move
-def get_intake(selected_date: date):
+def get_intake(user, selected_date: date):
   # TODO
   start_time = datetime.combine(selected_date, time(00, 00, 00))
   end_time = datetime.combine(selected_date, time(23, 59, 59))
   intake_data = []
-  intake = Intake.objects.filter(timestamp__range=(start_time, end_time)).all()
+  intake = Intake.objects.filter(user=user).filter(timestamp__range=(start_time, end_time)).all()
   total = empty_nutrient_dict()
   for i in intake:
     intake_data.append({
@@ -134,22 +135,26 @@ def get_intake(selected_date: date):
     intake_data.append(total)
   return intake_data
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def home(request):
   if request.method == 'POST':
     intake_form = GetDailyIntake(request.POST)
     if intake_form.is_valid():
-      intake_data = get_intake(date(
+      requested_date = date(
         int(request.POST['date_year']),
         int(request.POST['date_month']),
-        int(request.POST['date_day'])))
+        int(request.POST['date_day']))
+      intake_data = get_intake(request.user, requested_date)
       return render(request, 'app/home.html', { 'intake_data': intake_data,
-        'get_daily_intake_form': GetDailyIntake(),
+        'get_daily_intake_form': GetDailyIntake(initial={'date': requested_date}),
         'add_intake_form': AddIntake(initial={'timestamp': datetime.now()}) })
+  intake_data = get_intake(request.user, date.today())
   return render(request, 'app/home.html',
-    {'get_daily_intake_form': GetDailyIntake(),
+    { 'intake_data': intake_data, 'get_daily_intake_form': GetDailyIntake(initial={'date': date.today() }),
       'add_intake_form': AddIntake(initial={'timestamp': datetime.now()}) })
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def intake(request):
   if request.method == 'POST':
@@ -160,6 +165,7 @@ def intake(request):
       intake.save()
   return redirect(reverse('home'))
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def food(request):
   if request.method == 'POST':
@@ -169,10 +175,12 @@ def food(request):
   food_form = AddFood()
   return render(request, 'app/add_food.html', {'food_form': food_form})
 
+@login_required
 @require_http_methods(['GET', 'POST'])
 def target(request):
   return HttpResponse('target')
 
+@login_required
 @require_GET
 def food_category(request):
   return HttpResponse('food_category')
