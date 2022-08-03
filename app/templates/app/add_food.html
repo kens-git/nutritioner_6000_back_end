@@ -1,14 +1,188 @@
 {% extends 'app/base.html' %}
-{% load bootstrap5 %}
+{% comment %} {% load bootstrap5 %}
 {% bootstrap_css %}
-{% bootstrap_javascript %}
+{% bootstrap_javascript %} {% endcomment %}
 
 {% block content %}
 {% include 'app/links.html' %}
 <h1 class="display-5">Add new food</h1>
 <form action="{% url 'food' %}" method="post">
   {% csrf_token %}
-  {% bootstrap_form food_form %}
+  {% comment %} TODO: improve {% endcomment %}
+  <table>
+    <tr>
+      <td>{{ food_form.name.label }}</td>
+      <td>{{ food_form.name }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.category.label }}</td>
+      <td>{{ food_form.category }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.reference_size.label }}</td>
+      <td>{{ food_form.reference_size }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.unit.label }}</td>
+      <td>{{ food_form.unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.fat.label }}</td>
+      <td>{{ food_form.fat }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.saturated_fat.label }}</td>
+      <td>{{ food_form.saturated_fat }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.trans_fat.label }}</td>
+      <td>{{ food_form.trans_fat }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.cholesterol.label }}</td>
+      <td>{{ food_form.cholesterol }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.sodium.label }}</td>
+      <td>{{ food_form.sodium }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.carbohydrates.label }}</td>
+      <td>{{ food_form.carbohydrates }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.fibre.label }}</td>
+      <td>{{ food_form.fibre }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.sugar.label }}</td>
+      <td>{{ food_form.sugar }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.protein.label }}</td>
+      <td>{{ food_form.protein }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.biotin.label }}</td>
+      <td>{{ food_form.biotin }}</td>
+      <td>{{ food_form.biotin_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.calcium.label }}</td>
+      <td>{{ food_form.calcium }}</td>
+      <td>{{ food_form.calcium_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.chromium.label }}</td>
+      <td>{{ food_form.chromium }}</td>
+      <td>{{ food_form.chromium_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.copper.label }}</td>
+      <td>{{ food_form.copper }}</td>
+      <td>{{ food_form.copper_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.folacin.label }}</td>
+      <td>{{ food_form.folacin }}</td>
+      <td>{{ food_form.folacin_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.iodide.label }}</td>
+      <td>{{ food_form.iodide }}</td>
+      <td>{{ food_form.iodide_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.iron.label }}</td>
+      <td>{{ food_form.iron }}</td>
+      <td>{{ food_form.iron_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.magnesium.label }}</td>
+      <td>{{ food_form.magnesium }}</td>
+      <td>{{ food_form.magnesium_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.manganese.label }}</td>
+      <td>{{ food_form.manganese }}</td>
+      <td>{{ food_form.manganese_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.molybdenum.label }}</td>
+      <td>{{ food_form.molybdenum }}</td>
+      <td>{{ food_form.molybdenum_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.niacin.label }}</td>
+      <td>{{ food_form.niacin }}</td>
+      <td>{{ food_form.niacin_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.pantothenate.label }}</td>
+      <td>{{ food_form.pantothenate }}</td>
+      <td>{{ food_form.pantothenate_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.phosphorous.label }}</td>
+      <td>{{ food_form.phosphorous }}</td>
+      <td>{{ food_form.phosphorous_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.potassium.label }}</td>
+      <td>{{ food_form.potassium }}</td>
+      <td>{{ food_form.potassium_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.riboflavin.label }}</td>
+      <td>{{ food_form.riboflavin }}</td>
+      <td>{{ food_form.riboflavin_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.selenium.label }}</td>
+      <td>{{ food_form.selenium }}</td>
+      <td>{{ food_form.selenium_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.thiamine.label }}</td>
+      <td>{{ food_form.thiamine }}</td>
+      <td>{{ food_form.thiamine_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_a.label }}</td>
+      <td>{{ food_form.vitamin_a }}</td>
+      <td>{{ food_form.vitamin_a_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_b6.label }}</td>
+      <td>{{ food_form.vitamin_b6 }}</td>
+      <td>{{ food_form.vitamin_b6_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_b12.label }}</td>
+      <td>{{ food_form.vitamin_b12 }}</td>
+      <td>{{ food_form.vitamin_b12_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_c.label }}</td>
+      <td>{{ food_form.vitamin_c }}</td>
+      <td>{{ food_form.vitamin_c_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_d.label }}</td>
+      <td>{{ food_form.vitamin_d }}</td>
+      <td>{{ food_form.vitamin_d_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.vitamin_e.label }}</td>
+      <td>{{ food_form.vitamin_e }}</td>
+      <td>{{ food_form.vitamin_e_unit }}</td>
+    </tr>
+    <tr>
+      <td>{{ food_form.zinc.label }}</td>
+      <td>{{ food_form.zinc }}</td>
+      <td>{{ food_form.zinc_unit }}</td>
+    </tr>
+  </table>
   <input type="submit" value="Submit" class="btn btn-primary btn-lg">
 </form>
 {% endblock %}
