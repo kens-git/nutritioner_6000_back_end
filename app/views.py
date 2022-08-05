@@ -7,10 +7,11 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods, require_GET
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .models import Food, Intake
-from .forms.add_food import AddFood
+from .models import DailyValue, Food, Intake, NutrientUnit, Target
+from .forms.add_food import AddFood, NutrientUnitType
 from .forms.add_intake import AddIntake
 from .forms.get_daily_intake import GetDailyIntake
+from .forms.get_target import GetTarget
 
 # TODO: move
 def empty_nutrient_dict():
@@ -25,6 +26,47 @@ def empty_nutrient_dict():
     'sugar': 0,
     'protein': 0,
     'biotin': 0,
+    'calcium': 0,
+    'chromium': 0,
+    'copper': 0,
+    'folacin': 0,
+    'iodide': 0,
+    'iron': 0,
+    'magnesium': 0,
+    'manganese': 0,
+    'molybdenum': 0,
+    'niacin': 0,
+    'pantothenate': 0,
+    'phosphorous': 0,
+    'potassium': 0,
+    'riboflavin': 0,
+    'selenium': 0,
+    'thiamine': 0,
+    'vitamin_a': 0,
+    'vitamin_b6': 0,
+    'vitamin_b12': 0,
+    'vitamin_c': 0,
+    'vitamin_d': 0,
+    'vitamin_e': 0,
+    'zinc': 0,
+  }
+
+def get_target_data(target):
+  return {
+    'food_name': 'Target',  # TODO: remember this is here when fixing repeated code
+    'category': '',         # TODO
+    'serving_size': '',     # TODO
+    'unit': '',             # TODO
+    'fat': target.fat,
+    'saturated_fat': target.saturated_fat,
+    'trans_fat': target.trans_fat,
+    'cholesterol': target.cholesterol,
+    'sodium': target.sodium,
+    'carbohydrates': target.carbohydrates,
+    'fibre': target.fibre,
+    'sugar': target.sugar,
+    'protein': target.protein,
+    'biotin': target.biotin,
     'calcium': 0,
     'chromium': 0,
     'copper': 0,
@@ -133,6 +175,8 @@ def get_intake(user, selected_date: date):
     total['zinc'] += intake_data[-1]['zinc']
   if(len(intake_data)):
     intake_data.append(total)
+  if target := Target.objects.filter(user=user).latest('timestamp'):
+    intake_data.append(get_target_data(target))
   return intake_data
 
 @login_required
@@ -165,20 +209,89 @@ def intake(request):
       intake.save()
   return redirect(reverse('home'))
 
+# TODO: Maybe use a dict for NutrientUnitType, because the form returns
+#       its value as a string, and the values can't be compared for some reason
+#       i.e., NutrientUnitType.DAILY_VALUE == a doesn't work
+def get_nutrient_value(name: str, value: float, type: NutrientUnitType):
+  if type == NutrientUnitType.DAILY_VALUE.value:
+    dv = DailyValue.objects.filter(nutrient_name=name).first()
+    return (value / 100) * dv.value
+  return value
+
 @login_required
 @require_http_methods(['GET', 'POST'])
 def food(request):
   if request.method == 'POST':
     food_form = AddFood(request.POST)
     if food_form.is_valid():
-      food_form.save()
+      food = food_form.save(commit=False)
+      food.biotin = get_nutrient_value(
+        'biotin', food.biotin, int(food_form['biotin_unit'].data))
+      food.calcium = get_nutrient_value(
+        'calcium', food.calcium, int(food_form['calcium_unit'].data))
+      food.chromium = get_nutrient_value(
+        'chromium', food.chromium, int(food_form['chromium_unit'].data))
+      food.copper = get_nutrient_value(
+        'copper', food.copper, int(food_form['copper_unit'].data))
+      food.folacin = get_nutrient_value(
+        'folacin', food.folacin, int(food_form['folacin_unit'].data))
+      food.iodide = get_nutrient_value(
+        'iodide', food.iodide, int(food_form['iodide_unit'].data))
+      food.iron = get_nutrient_value(
+        'iron', food.iron, int(food_form['iron_unit'].data))
+      food.magnesium = get_nutrient_value(
+        'magnesium', food.magnesium, int(food_form['magnesium_unit'].data))
+      food.manganese = get_nutrient_value(
+        'manganese', food.manganese, int(food_form['manganese_unit'].data))
+      food.molybdenum = get_nutrient_value(
+        'molybdenum', food.molybdenum, int(food_form['molybdenum_unit'].data))
+      food.niacin = get_nutrient_value(
+        'niacin', food.niacin, int(food_form['niacin_unit'].data))
+      food.pantothenate = get_nutrient_value(
+        'pantothenate', food.pantothenate, int(food_form['pantothenate_unit'].data))
+      food.phosphorous = get_nutrient_value(
+        'phosphorous', food.phosphorous, int(food_form['phosphorous_unit'].data))
+      food.potassium = get_nutrient_value(
+        'potassium', food.potassium, int(food_form['potassium_unit'].data))
+      food.riboflavin = get_nutrient_value(
+        'riboflavin', food.riboflavin, int(food_form['riboflavin_unit'].data))
+      food.selenium = get_nutrient_value(
+        'selenium', food.selenium, int(food_form['selenium_unit'].data))
+      food.thiamine = get_nutrient_value(
+        'thiamine', food.thiamine, int(food_form['thiamine_unit'].data))
+      food.vitamin_a = get_nutrient_value(
+        'vitamin_a', food.vitamin_a, int(food_form['vitamin_a_unit'].data))
+      food.vitamin_b6 = get_nutrient_value(
+        'vitamin_b6', food.vitamin_b6, int(food_form['vitamin_b6_unit'].data))
+      food.vitamin_b12 = get_nutrient_value(
+        'vitamin_b12', food.vitamin_b12, int(food_form['vitamin_b12_unit'].data))
+      food.vitamin_c = get_nutrient_value(
+        'vitamin_c', food.vitamin_c, int(food_form['vitamin_c_unit'].data))
+      food.vitamin_d = get_nutrient_value(
+        'vitamin_d', food.vitamin_d, int(food_form['vitamin_d_unit'].data))
+      food.vitamin_e = get_nutrient_value(
+        'vitamin_e', food.vitamin_e, int(food_form['vitamin_e_unit'].data))
+      food.zinc = get_nutrient_value(
+        'zinc', food.zinc, int(food_form['zinc_unit'].data))
+      food.save()
   food_form = AddFood()
   return render(request, 'app/add_food.html', {'food_form': food_form})
 
 @login_required
 @require_http_methods(['GET', 'POST'])
 def target(request):
-  return HttpResponse('target')
+  success = False
+  if request.method == 'POST':
+    get_target_form = GetTarget(request.POST)
+    if get_target_form.is_valid():
+      target = get_target_form.save(commit=False)
+      target.user = request.user
+      target.timestamp = datetime.now()
+      target.save()
+      success = True
+  get_target_form = GetTarget()
+  return render(request, 'app/target.html',
+    {'get_target_form': get_target_form, 'success': success})
 
 @login_required
 @require_GET

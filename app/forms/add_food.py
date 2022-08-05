@@ -1,9 +1,14 @@
-from typing import Type
+from enum import Enum
 from django import forms
 from ..models import Food, NutrientUnit
 
+class NutrientUnitType(Enum):
+  DAILY_VALUE = 1
+  ABSOLUTE = 2
+
 def make_unit_choices(unit: str):
-  return [(1, 'DV%'), (2, unit)]
+  return [(NutrientUnitType.DAILY_VALUE.value, 'DV%'),
+    (NutrientUnitType.ABSOLUTE.value, unit)]
 
 class AddFood(forms.ModelForm):
   biotin_unit = forms.ChoiceField(choices=make_unit_choices('ug'),
@@ -58,9 +63,7 @@ class AddFood(forms.ModelForm):
   class Meta:
     model = Food
     fields = '__all__'
-    widgets = {
-      'name': forms.TextInput(),
-    }
+    widgets = { 'name': forms.TextInput() }
 
   def __init__(self, *args, **kwargs):
     super(forms.ModelForm, self).__init__(*args, **kwargs)
