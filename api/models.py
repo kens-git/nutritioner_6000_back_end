@@ -49,8 +49,7 @@ class Consumable(models.Model):
   category = models.ForeignKey(ConsumableCategory, on_delete=models.PROTECT)
   unit = models.ForeignKey(Name, on_delete=models.PROTECT)
   reference_size = models.FloatField()
-  nutrients = models.ManyToManyField(
-    ConsumableNutrient, on_delete=models.PROTECT)
+  nutrients = models.ManyToManyField(ConsumableNutrient)
 
   def __str__(self):
     return f'{self.name}'
