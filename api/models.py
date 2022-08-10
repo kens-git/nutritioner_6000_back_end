@@ -12,7 +12,7 @@ class Name(models.Model):
 class Nutrient(models.Model):
   name = models.ForeignKey(
     Name, on_delete=models.PROTECT, related_name='nutrient_name')
-  description = models.TextField()
+  description = models.TextField(blank=True)
   unit = models.ForeignKey(
     Name, on_delete=models.PROTECT, related_name='nutrient_unit')
 
@@ -32,7 +32,7 @@ class DailyValue(models.Model):
 
 class ConsumableCategory(models.Model):
   name = models.ForeignKey(Name, on_delete=models.PROTECT)
-  description = models.TextField()
+  description = models.TextField(blank=True)
 
   def __str__(self):
     return f'{self.name}'
