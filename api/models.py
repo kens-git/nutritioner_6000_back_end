@@ -7,9 +7,11 @@ class Name(models.Model):
   plural = models.CharField(max_length=50)
 
 class Nutrient(models.Model):
-  name = models.ForeignKey(Name, on_delete=models.PROTECT)
+  name = models.ForeignKey(
+    Name, on_delete=models.PROTECT, related_name='nutreint_name')
   description = models.TextField()
-  unit = models.ForeignKey(Name, on_delete=models.PROTECT)
+  unit = models.ForeignKey(
+    Name, on_delete=models.PROTECT, related_name='nutrient_unit')
 
 class DailyValue(models.Model):
   # TODO: instead of nullable, maybe add admin user as creator
