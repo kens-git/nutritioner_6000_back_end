@@ -20,8 +20,4 @@ from django.urls import include, path
 
 urlpatterns = [
   path('admin/', admin.site.urls),
-  path('login/',
-    auth_views.LoginView.as_view(redirect_authenticated_user=True)),
-  path('', include('django.contrib.auth.urls')),
-  path('', include('app.urls')),
 ]
