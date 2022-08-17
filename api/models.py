@@ -22,8 +22,8 @@ class Name(UserProtect):
     return f'{self.name} ({self.abbreviation})'
 
 class Nutrient(UserProtect):
-  name = models.ForeignKey(
-    Name, unique=True, on_delete=models.PROTECT, related_name='nutrient_name')
+  name = models.OneToOneField(
+    Name, on_delete=models.PROTECT, related_name='nutrient_name')
   description = models.TextField(blank=True)
   unit = models.ForeignKey(
     Name, on_delete=models.PROTECT, related_name='nutrient_unit')
@@ -39,7 +39,7 @@ class DailyValue(UserProtect):
     return f'{self.nutrient} ({self.value})'
 
 class ConsumableCategory(UserProtect):
-  name = models.ForeignKey(Name, unique=True, on_delete=models.PROTECT)
+  name = models.OneToOneField(Name, on_delete=models.PROTECT)
   description = models.TextField(blank=True)
 
   def __str__(self):
