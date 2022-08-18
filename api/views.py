@@ -3,24 +3,11 @@ from rest_framework import viewsets
 from rest_framework.authentication import SessionAuthentication
 from .models import (Consumable, ConsumableCategory, ConsumableNutrient,
   DailyValue, Intake, Name, Nutrient, Target)
+from .permissions import (OWNER_ACTIONS, OWNER_UPDATE_ACTIONS,
+  get_permissions as get_perms)
 from .serializers import (ConsumableSerializer, ConsumableCategorySerializer,
   ConsumableNutrientSerializer, DailyValueSerializer, IntakeSerializer,
   NameSerializer, NutrientSerializer, TargetSerializer)
-
-OWNER_UPDATE_ACTIONS = ('update', 'partial_update')
-OWNER_ACTIONS = ('update', 'partial_update', 'destroy')
-
-class ObjectOwnerPermission(permissions.BasePermission):
-  def has_permission(self, request, view):
-    return True
-
-  def has_object_permission(self, request, view, obj):
-    return obj.user == request.user
-
-def get_permissions(action, acceptable_actions):
-  if action in acceptable_actions:
-    return [permissions.IsAuthenticated(), ObjectOwnerPermission()]
-  return [permissions.IsAuthenticated()]
 
 # TODO: define proper querysets
 # TODO: move authentication_classes to settings.py, change to Token
@@ -30,7 +17,7 @@ class ConsumableViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class ConsumableCategoryViewSet(viewsets.ModelViewSet):
   serializer_class = ConsumableCategorySerializer
@@ -38,7 +25,7 @@ class ConsumableCategoryViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class ConsumableNutrientViewSet(viewsets.ModelViewSet):
   serializer_class = ConsumableNutrientSerializer
@@ -46,7 +33,7 @@ class ConsumableNutrientViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class DailyValueViewSet(viewsets.ModelViewSet):
   serializer_class = DailyValueSerializer
@@ -54,7 +41,7 @@ class DailyValueViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class IntakeViewSet(viewsets.ModelViewSet):
   serializer_class = IntakeSerializer
@@ -62,7 +49,7 @@ class IntakeViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_ACTIONS)
+    return get_perms(self.action, OWNER_ACTIONS)
 
 class NameViewSet(viewsets.ModelViewSet):
   serializer_class = NameSerializer
@@ -70,7 +57,7 @@ class NameViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class NutrientViewSet(viewsets.ModelViewSet):
   serializer_class = NutrientSerializer
@@ -78,7 +65,7 @@ class NutrientViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_UPDATE_ACTIONS)
+    return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
 class TargetViewSet(viewsets.ModelViewSet):
   serializer_class = TargetSerializer
@@ -86,4 +73,4 @@ class TargetViewSet(viewsets.ModelViewSet):
   authentication_classes = [SessionAuthentication]
 
   def get_permissions(self):
-    return get_permissions(self.action, OWNER_ACTIONS)
+    return get_perms(self.action, OWNER_ACTIONS)
