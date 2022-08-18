@@ -32,7 +32,7 @@ class Nutrient(UserProtect):
     return f'{self.name} ({self.unit})'
 
 class DailyValue(UserProtect):
-  nutrient = models.ForeignKey(Nutrient, on_delete=models.CASCADE)
+  nutrient = models.ForeignKey(Nutrient, on_delete=models.PROTECT)
   value = models.FloatField()
 
   def __str__(self):
