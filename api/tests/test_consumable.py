@@ -118,7 +118,6 @@ class DestroyConsumableTest(APITestCase):
   fixtures = ['test_data.json']
 
   def test_anonymous_denied(self):
-    patch_data = {'name': 'New Name'}
     response = self.client.delete(
       reverse('consumable-detail', kwargs={'pk': 1}))
     self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
