@@ -48,7 +48,7 @@ class CreateConsumableTest(APITestCase):
   def test_anonymous_denied(self):
     consumable = create_consumable(1, 'Apple', 1, 1, 1, [1, 2])
     response = self.client.post(reverse('consumable-list'),
-      data=consumable, content_type='application/json')
+      data=consumable)
     self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
   def test_create(self):
@@ -58,7 +58,7 @@ class CreateConsumableTest(APITestCase):
     response = self.client.post(reverse('consumable-list'), data=consumable)
     self.assertEqual(response.status_code, status.HTTP_201_CREATED)
     new_consumable = Consumable.objects.get(pk=3)
-    self.assertEqual(new_consumable.name, 'Apple')
+    self.assertEqual(new_consumable.name, consumable['name'])
 
 class UpdateConsumableTest(APITestCase):
   fixtures = ['test_data.json']
