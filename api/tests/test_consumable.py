@@ -1,7 +1,9 @@
-from django.contrib.auth import get_user_model
-from django.urls import reverse
-from rest_framework import status
-from rest_framework.test import APITestCase, force_authenticate
+from .generic_tests.create import GenericCreateTest
+from .generic_tests.destroy_disabled import GenericDestroyDisabledTest
+from .generic_tests.list import GenericListTest
+from .generic_tests.partial_update import GenericPartialUpdateTest
+from .generic_tests.retreive import GenericRetrieveTest
+from .generic_tests.update import GenericUpdateTest
 from ..models import Consumable
 
 def create_consumable(user, name, category_pk, unit_pk, reference_size,
@@ -9,129 +11,72 @@ def create_consumable(user, name, category_pk, unit_pk, reference_size,
   return {'user': user, 'name': name, 'category': category_pk, 'unit': unit_pk,
     'reference_size': reference_size, 'nutrients': nutrient_pks}
 
-class ListConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
+class ListConsumableTest(GenericListTest):
+  GenericListTest.fixtures = ['test_data.json']
 
-  def test_anonymous_denied(self):
-    response = self.client.get(reverse('consumable-list'))
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+  GenericListTest.test_data = {
+    'url_name': 'consumable',
+    'username': 'user1',
+    'data_length': 2,
+    'column_name': 'name',
+    'expected_values': ['Test Food 1', 'Test Food 2'],
+  }
 
-  def test_list(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    response = self.client.get(reverse('consumable-list'))
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(len(response.data), 2)
-    response_names = [response.data[0]['name'], response.data[1]['name']]
-    expected_names = ['Test Food 1', 'Test Food 2']
-    self.assertEqual(sorted(response_names), sorted(expected_names))
+class RetrieveConsumableTest(GenericRetrieveTest):
+  GenericRetrieveTest.fixtures = ['test_data.json']
 
-class RetrieveConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
+  GenericRetrieveTest.test_data = {
+    'url_name': 'consumable',
+    'username': 'user1',
+    'pk': 1,
+    'column_name': 'name',
+    'expected_value': 'Test Food 1',
+  }
 
-  def test_anonymous_denied(self):
-    response = self.client.get(
-      reverse('consumable-detail', kwargs={'pk': 1}))
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+class CreateConsumableTest(GenericCreateTest):
+  GenericCreateTest.fixtures = ['test_data.json']
 
-  def test_retrieve(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    response = self.client.get(
-      reverse('consumable-detail', kwargs={'pk': 1}))
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    self.assertEqual(response.data['name'], 'Test Food 1')
+  GenericCreateTest.test_data = {
+    'url_name': 'consumable',
+    'data': create_consumable(1, 'Apple', 1, 1, 1, [1, 2]),
+    'username': 'user1',
+    'created_data': lambda: Consumable.objects.get(pk=3).name,
+    'pk': 3,
+    'column_name': 'name',
+  }
 
-class CreateConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
+class UpdateConsumableTest(GenericUpdateTest):
+  GenericUpdateTest.fixtures = ['test_data.json']
 
-  def test_anonymous_denied(self):
-    consumable = create_consumable(1, 'Apple', 1, 1, 1, [1, 2])
-    response = self.client.post(reverse('consumable-list'),
-      data=consumable)
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+  GenericUpdateTest.test_data = {
+    'url_name': 'consumable',
+    'data': create_consumable(1, 'Banana', 1, 1, 1, [1, 2]),
+    'username': 'user1',
+    'pk_owned': 1,
+    'pk_unowned': 2,
+    'updated_data': lambda: Consumable.objects.get(pk=1).name,
+    'column_name': 'name',
+  }
 
-  def test_create(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    consumable = create_consumable(1, 'Apple', 1, 1, 1, [1, 2])
-    response = self.client.post(reverse('consumable-list'), data=consumable)
-    self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-    new_consumable = Consumable.objects.get(pk=3)
-    self.assertEqual(new_consumable.name, consumable['name'])
+class PartialUpdateConsumableTest(GenericPartialUpdateTest):
+  GenericPartialUpdateTest.fixtures = ['test_data.json']
 
-class UpdateConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
+  GenericPartialUpdateTest.test_data = {
+    'url_name': 'consumable',
+    'data': {'name': 'New Name'},
+    'username': 'user1',
+    'pk_owned': 1,
+    'pk_unowned': 2,
+    'updated_data': lambda: Consumable.objects.get(pk=1).name,
+    'column_name': 'name',
+  }
 
-  def test_anonymous_denied(self):
-    put_data = create_consumable(1, 'Banana', 1, 1, 1, [1, 2])
-    response = self.client.patch(
-      reverse('consumable-detail', kwargs={'pk': 1}), data=put_data)
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+class DestroyConsumableTest(GenericDestroyDisabledTest):
+  GenericDestroyDisabledTest.fixtures = ['test_data.json']
 
-  def test_unowned_denied(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    put_data = create_consumable(1, 'Banana', 1, 1, 1, [1, 2])
-    response = self.client.put(
-      reverse('consumable-detail', kwargs={'pk': 2}), data=put_data)
-    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-  def test_update(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    put_data = create_consumable(1, 'Banana', 1, 1, 1, [1, 2])
-    response = self.client.put(
-      reverse('consumable-detail', kwargs={'pk': 1}), data=put_data)
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    updated_consumable = Consumable.objects.get(pk=1)
-    self.assertEqual(updated_consumable.name, put_data['name'])
-
-class PartialUpdateConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
-
-  def test_anonymous_denied(self):
-    patch_data = {'name': 'New Name'}
-    response = self.client.patch(
-      reverse('consumable-detail', kwargs={'pk': 1}), data=patch_data)
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-  def test_unowned_denied(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    patch_data = {'name': 'New Name'}
-    response = self.client.patch(
-      reverse('consumable-detail', kwargs={'pk': 2}), data=patch_data)
-    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-
-  def test_partial_update(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    patch_data = {'name': 'New Name'}
-    response = self.client.patch(
-      reverse('consumable-detail', kwargs={'pk': 1}), data=patch_data)
-    self.assertEqual(response.status_code, status.HTTP_200_OK)
-    updated_consumable = Consumable.objects.get(pk=1)
-    self.assertEqual(updated_consumable.name, 'New Name')
-
-class DestroyConsumableTest(APITestCase):
-  fixtures = ['test_data.json']
-
-  def test_anonymous_denied(self):
-    response = self.client.delete(
-      reverse('consumable-detail', kwargs={'pk': 1}))
-    self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-  def test_unowned_denied(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    response = self.client.delete(
-      reverse('consumable-detail', kwargs={'pk': 2}))
-    self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
-
-  def test_owned_denied(self):
-    self.client.force_authenticate(
-      user=get_user_model().objects.get(username='user1'))
-    response = self.client.delete(
-      reverse('consumable-detail', kwargs={'pk': 1}))
-    self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+  GenericDestroyDisabledTest.test_data = {
+    'url_name': 'consumable',
+    'username': 'user1',
+    'pk_owned': 1,
+    'pk_unowned': 2,
+  }
