@@ -21,12 +21,19 @@ class Name(UserProtect):
   def __str__(self):
     return f'{self.name} ({self.abbreviation})'
 
+class Unit(UserProtect):
+  name = models.OneToOneField(Name, on_delete=models.PROTECT)
+  description = models.TextField(blank=True)
+
+  def __str__(self):
+    return f'{self.name}'
+
 class Nutrient(UserProtect):
   name = models.OneToOneField(
     Name, on_delete=models.PROTECT, related_name='nutrient_name')
   description = models.TextField(blank=True)
   unit = models.ForeignKey(
-    Name, on_delete=models.PROTECT, related_name='nutrient_unit')
+    Unit, on_delete=models.PROTECT, related_name='nutrient_unit')
 
   def __str__(self):
     return f'{self.name} ({self.unit})'
@@ -55,7 +62,7 @@ class ConsumableNutrient(models.Model):
 class Consumable(UserProtect):
   name = models.TextField(unique=True)
   category = models.ForeignKey(ConsumableCategory, on_delete=models.PROTECT)
-  unit = models.ForeignKey(Name, related_name='unit', on_delete=models.PROTECT)
+  unit = models.ForeignKey(Unit, related_name='unit', on_delete=models.PROTECT)
   reference_size = models.FloatField()
   nutrients = models.ManyToManyField(ConsumableNutrient)
 
@@ -66,10 +73,10 @@ class Target(UserCascade):
   timestamp = models.DateTimeField()
   name = models.CharField(unique=True, max_length=200)
   description = models.TextField(blank=True)
-  nutrients = models.ManyToManyField(Nutrient)
+  nutrients = models.ManyToManyField(ConsumableNutrient)
 
   def __str__(self):
-    return f'{self.user}: {self.description}'
+    return f'{self.user}: {self.name}'
 
 class Intake(UserCascade):
   timestamp = models.DateTimeField()
