@@ -85,7 +85,7 @@ class UpdateConsumableTest(APITestCase):
       reverse('consumable-detail', kwargs={'pk': 1}), data=put_data)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     updated_consumable = Consumable.objects.get(pk=1)
-    self.assertEqual(updated_consumable.name, 'Banana')
+    self.assertEqual(updated_consumable.name, put_data['name'])
 
 class PartialUpdateConsumableTest(APITestCase):
   fixtures = ['test_data.json']
