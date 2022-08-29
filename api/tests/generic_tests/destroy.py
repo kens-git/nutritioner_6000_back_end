@@ -3,7 +3,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-class GenericDestroyDisabledTest(APITestCase):
+class GenericDestroyTest(APITestCase):
   test_data = {}
 
   def setUp(self):
@@ -24,10 +24,10 @@ class GenericDestroyDisabledTest(APITestCase):
     self.client.force_authenticate(
       user=get_user_model().objects.get(username=self.username))
     response = self.client.delete(self.unowned_url)
-    self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-  def test_owned_denied(self):
+  def test_owned(self):
     self.client.force_authenticate(
       user=get_user_model().objects.get(username=self.username))
     response = self.client.delete(self.owned_url)
-    self.assertEqual(response.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
+    self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)

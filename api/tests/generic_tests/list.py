@@ -8,11 +8,11 @@ class GenericListTest(APITestCase):
   test_data = {}
 
   def setUp(self):
-    self.url = reverse(f'{GLT.test_data["url_name"]}-list')
-    self.username = GLT.test_data['username']
-    self.data_length = GLT.test_data['data_length']
-    self.column_name = GLT.test_data['column_name']
-    self.expected_values = GLT.test_data['expected_values']
+    self.url = reverse(f'{self.test_data["url_name"]}-list')
+    self.username = self.test_data['username']
+    self.data_length = self.test_data['data_length']
+    self.column_name = self.test_data['column_name']
+    self.expected_values = self.test_data['expected_values']
 
   def test_anonymous_denied(self):
     response = self.client.get(self.url)
@@ -24,9 +24,5 @@ class GenericListTest(APITestCase):
     response = self.client.get(self.url)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(len(response.data), self.data_length)
-    response_names = [
-      response.data[0][self.column_name],
-      response.data[1][self.column_name]]
-    self.assertEqual(sorted(response_names), sorted(self.expected_values))
-
-GLT = GenericListTest
+    response_data = [item[self.column_name] for item in response.data]
+    self.assertEqual(sorted(response_data), sorted(self.expected_values))

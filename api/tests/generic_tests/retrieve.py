@@ -7,11 +7,11 @@ class GenericRetrieveTest(APITestCase):
   test_data = {}
 
   def setUp(self):
-    self.url = reverse(f'{GRT.test_data["url_name"]}-detail',
-      kwargs={'pk': GRT.test_data['pk']})
-    self.username = GRT.test_data['username']
-    self.column_name = GRT.test_data['column_name']
-    self.expected_value = GRT.test_data['expected_value']
+    self.url = reverse(f'{self.test_data["url_name"]}-detail',
+      kwargs={'pk': self.test_data['pk']})
+    self.username = self.test_data['username']
+    self.column_name = self.test_data['column_name']
+    self.expected_value = self.test_data['expected_value']
 
   def test_anonymous_denied(self):
     response = self.client.get(self.url)
@@ -23,5 +23,3 @@ class GenericRetrieveTest(APITestCase):
     response = self.client.get(self.url)
     self.assertEqual(response.status_code, status.HTTP_200_OK)
     self.assertEqual(response.data[self.column_name], self.expected_value)
-
-GRT = GenericRetrieveTest
