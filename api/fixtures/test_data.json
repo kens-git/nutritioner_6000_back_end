@@ -429,6 +429,58 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 34,
+  "fields": {
+    "action_time": "2022-08-29T03:11:55.717Z",
+    "user": 1,
+    "content_type": 10,
+    "object_id": "8",
+    "object_repr": "Candy (Candy)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 35,
+  "fields": {
+    "action_time": "2022-08-29T03:49:00.435Z",
+    "user": 1,
+    "content_type": 15,
+    "object_id": "4",
+    "object_repr": "Calcium (Calcium) (Milligram (mg)) (100.0)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"User\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 36,
+  "fields": {
+    "action_time": "2022-08-29T03:49:03.844Z",
+    "user": 1,
+    "content_type": 15,
+    "object_id": "3",
+    "object_repr": "Biotin (Biotin) (Microgram (ug)) (100.0)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"User\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 37,
+  "fields": {
+    "action_time": "2022-08-29T03:50:35.294Z",
+    "user": 1,
+    "content_type": 9,
+    "object_id": "1",
+    "object_repr": "Test Food 1",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\"]}}]"
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -1045,7 +1097,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$320000$Sz4bkyrusmaiCAaoe7j8kP$MKU+AK7czGgscMr4V7AWM1C7ubdaFQ0AZJnmZNNdgSc=",
-    "last_login": "2022-08-22T15:24:48.803Z",
+    "last_login": "2022-08-22T22:51:03.797Z",
     "is_superuser": true,
     "username": "user1",
     "first_name": "",
@@ -1214,10 +1266,10 @@
 },
 {
   "model": "sessions.session",
-  "pk": "d2h8p2vffpyjztewc3xfrssfbp0el7z7",
+  "pk": "au5kojduqm4t1pkf4amezftcy03h6kcf",
   "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hBgoLQu3XsGMgODVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwJ3EWWpx-N8L44LqDdMd6azK2ui4zyV2RB-3y2hI_L4f7d1Cwl29tCKyiMbsMgMkzaj2gBUPOpIiYogE9eSbmEcAjZ2_sxFpFGhidIvH-AParOKI:1oQ9IG:eYMPr_vcNvcJAxML68ivJ6U_6r-KQstul7wbqJEQnhE",
-    "expire_date": "2022-09-05T15:24:48.810Z"
+    "session_data": ".eJxVjEEOwiAQRe_C2hBgoLQu3XsGMgODVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwJ3EWWpx-N8L44LqDdMd6azK2ui4zyV2RB-3y2hI_L4f7d1Cwl29tCKyiMbsMgMkzaj2gBUPOpIiYogE9eSbmEcAjZ2_sxFpFGhidIvH-AParOKI:1oQGG7:r9PIDpUnobG19JNt6COA9Do4bUyCZ6p6taym37qhqOo",
+    "expire_date": "2022-09-05T22:51:03.802Z"
   }
 },
 {
@@ -1288,6 +1340,16 @@
     "name": "Gram",
     "abbreviation": "g",
     "plural": "Grams"
+  }
+},
+{
+  "model": "api.name",
+  "pk": 8,
+  "fields": {
+    "user": 1,
+    "name": "Candy",
+    "abbreviation": "Candy",
+    "plural": "Candies"
   }
 },
 {
@@ -1395,6 +1457,7 @@
   "model": "api.consumablenutrient",
   "pk": 1,
   "fields": {
+    "user": 1,
     "nutrient": 1,
     "value": 10.0
   }
@@ -1403,6 +1466,7 @@
   "model": "api.consumablenutrient",
   "pk": 2,
   "fields": {
+    "user": 1,
     "nutrient": 2,
     "value": 10.0
   }
@@ -1411,6 +1475,7 @@
   "model": "api.consumablenutrient",
   "pk": 3,
   "fields": {
+    "user": 2,
     "nutrient": 1,
     "value": 100.0
   }
@@ -1419,6 +1484,7 @@
   "model": "api.consumablenutrient",
   "pk": 4,
   "fields": {
+    "user": 2,
     "nutrient": 2,
     "value": 100.0
   }
