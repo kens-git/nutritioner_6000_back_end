@@ -3,7 +3,6 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-# TODO: exclude this folder from testing so they don't show up as runnable tests
 class GenericListTest(APITestCase):
   test_data = {}
 
