@@ -52,7 +52,7 @@ class ConsumableCategory(UserProtect):
   def __str__(self):
     return f'{self.name}'
 
-class ConsumableNutrient(models.Model):
+class ConsumableNutrient(UserProtect):
   nutrient = models.ForeignKey(Nutrient, on_delete=models.PROTECT)
   value = models.FloatField()
 
