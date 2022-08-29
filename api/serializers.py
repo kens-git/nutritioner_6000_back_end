@@ -1,7 +1,7 @@
 
 from rest_framework import serializers
 from .models import (Consumable, ConsumableCategory, ConsumableNutrient,
-  DailyValue, Intake, Name, Nutrient, Target)
+  DailyValue, Intake, Name, Nutrient, Target, Unit)
 
 class ConsumableSerializer(serializers.ModelSerializer):
   class Meta:
@@ -41,4 +41,9 @@ class NutrientSerializer(serializers.ModelSerializer):
 class TargetSerializer(serializers.ModelSerializer):
   class Meta:
     model = Target
+    fields = '__all__'
+
+class UnitSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Unit
     fields = '__all__'
