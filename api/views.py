@@ -15,7 +15,6 @@ class OwnerUpdateViewSet(mixins.CreateModelMixin,
   def get_permissions(self):
     return get_perms(self.action, OWNER_UPDATE_ACTIONS)
 
-# TODO: define proper querysets
 class ConsumableViewSet(OwnerUpdateViewSet):
   serializer_class = ConsumableSerializer
   queryset = Consumable.objects.all()

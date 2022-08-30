@@ -8,7 +8,6 @@ def create_target(user, timestamp, name, description, nutrients):
   return {'user': user, 'timestamp': timestamp, 'name': name,
     'description': description, 'nutrients': nutrients}
 
-# TODO: tests for current user only
 class ListTargetTest(list.GenericListTest):
   fixtures = ['test_data.json']
 

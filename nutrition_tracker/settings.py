@@ -112,7 +112,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-# TODO: time/time zones in models and views
 TIME_ZONE = "UTC"
 
 USE_I18N = True

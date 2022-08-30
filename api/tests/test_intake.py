@@ -8,7 +8,6 @@ def create_intake(user, timestamp, consumable, serving_size):
   return {'user': user, 'timestamp': timestamp, 'consumable': consumable,
     'serving_size': serving_size}
 
-# TODO: tests for current user only
 class ListIntakeTest(list.GenericListTest):
   fixtures = ['test_data.json']
 
