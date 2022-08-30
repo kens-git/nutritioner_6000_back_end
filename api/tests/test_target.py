@@ -1,4 +1,5 @@
 from datetime import datetime
+from rest_framework import status
 from .generic_tests import (create, destroy, list, partial_update,
   retrieve, update)
 from ..models import Target
@@ -14,9 +15,9 @@ class ListTargetTest(list.GenericListTest):
   test_data = {
     'url_name': 'target',
     'username': 'user1',
-    'data_length': 2,
+    'data_length': 1,
     'column_name': 'name',
-    'expected_values': ['Current', 'Goals'],
+    'expected_values': ['Current'],
   }
 
 class RetrieveTargetTest(retrieve.GenericRetrieveTest):
@@ -29,6 +30,8 @@ class RetrieveTargetTest(retrieve.GenericRetrieveTest):
     'column_name': 'name',
     'expected_value': 'Current',
   }
+
+# TODO: retrieve unowned
 
 class CreateTargetTest(create.GenericCreateTest):
   fixtures = ['test_data.json']
@@ -54,6 +57,7 @@ class UpdateTargetTest(update.GenericUpdateTest):
     'pk_unowned': 2,
     'updated_data': lambda: Target.objects.get(pk=1).name,
     'column_name': 'name',
+    'denied_status': status.HTTP_404_NOT_FOUND,
   }
 
 class PartialUpdateTargetTest(partial_update.GenericPartialUpdateTest):
@@ -67,6 +71,7 @@ class PartialUpdateTargetTest(partial_update.GenericPartialUpdateTest):
     'pk_unowned': 2,
     'updated_data': lambda: Target.objects.get(pk=1).name,
     'column_name': 'name',
+    'denied_status': status.HTTP_404_NOT_FOUND,
   }
 
 class DestroyTargetTest(destroy.GenericDestroyTest):
@@ -77,4 +82,5 @@ class DestroyTargetTest(destroy.GenericDestroyTest):
     'username': 'user1',
     'pk_owned': 1,
     'pk_unowned': 2,
+    'denied_status': status.HTTP_404_NOT_FOUND,
   }

@@ -15,6 +15,8 @@ class GenericDestroyTest(APITestCase):
       kwargs={'pk': self.test_data['pk_owned']})
     self.unowned_url = reverse(self.url,
       kwargs={'pk': self.test_data['pk_unowned']})
+    self.denied_status = self.test_data.get('denied_status',
+      status.HTTP_403_FORBIDDEN)
 
   def test_anonymous_denied(self):
     response = self.client.delete(self.anonymous_url)
@@ -24,7 +26,7 @@ class GenericDestroyTest(APITestCase):
     self.client.force_authenticate(
       user=get_user_model().objects.get(username=self.username))
     response = self.client.delete(self.unowned_url)
-    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    self.assertEqual(response.status_code, self.denied_status)
 
   def test_owned(self):
     self.client.force_authenticate(

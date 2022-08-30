@@ -1,4 +1,5 @@
 from datetime import datetime
+from rest_framework import status
 from .generic_tests import (create, destroy, list, partial_update,
   retrieve, update)
 from ..models import Intake
@@ -14,9 +15,9 @@ class ListIntakeTest(list.GenericListTest):
   test_data = {
     'url_name': 'intake',
     'username': 'user1',
-    'data_length': 4,
+    'data_length': 2,
     'column_name': 'user',
-    'expected_values': [1, 1, 2, 2],
+    'expected_values': [1, 1],
   }
 
 class RetrieveIntakeTest(retrieve.GenericRetrieveTest):
@@ -29,6 +30,8 @@ class RetrieveIntakeTest(retrieve.GenericRetrieveTest):
     'column_name': 'user',
     'expected_value': 1,
   }
+
+# TODO: retrieve unowned
 
 class CreateIntakeTest(create.GenericCreateTest):
   fixtures = ['test_data.json']
@@ -54,6 +57,7 @@ class UpdateIntakeTest(update.GenericUpdateTest):
     'pk_unowned': 3,
     'updated_data': lambda: Intake.objects.get(pk=1).serving_size,
     'column_name': 'serving_size',
+    'denied_status': status.HTTP_404_NOT_FOUND,
   }
 
 class PartialUpdateIntakeTest(partial_update.GenericPartialUpdateTest):
@@ -67,6 +71,7 @@ class PartialUpdateIntakeTest(partial_update.GenericPartialUpdateTest):
     'pk_unowned': 3,
     'updated_data': lambda: Intake.objects.get(pk=1).serving_size,
     'column_name': 'serving_size',
+    'denied_status': status.HTTP_404_NOT_FOUND,
   }
 
 class DestroyConsumableTest(destroy.GenericDestroyTest):
@@ -77,4 +82,5 @@ class DestroyConsumableTest(destroy.GenericDestroyTest):
     'username': 'user1',
     'pk_owned': 1,
     'pk_unowned': 3,
+    'denied_status': status.HTTP_404_NOT_FOUND
   }

@@ -17,6 +17,8 @@ class GenericUpdateTest(APITestCase):
     self.unowned_url = reverse(self.url, kwargs={'pk': self.pk_unowned})
     self.updated_data = self.test_data['updated_data']
     self.column_name = self.test_data['column_name']
+    self.denied_status = self.test_data.get('denied_status',
+      status.HTTP_403_FORBIDDEN)
 
   def test_anonymous_denied(self):
     response = self.client.patch(self.anonymous_url, data=self.data)
@@ -26,7 +28,7 @@ class GenericUpdateTest(APITestCase):
     self.client.force_authenticate(
       user=get_user_model().objects.get(username=self.username))
     response = self.client.put(self.unowned_url, data=self.data)
-    self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    self.assertEqual(response.status_code, self.denied_status)
 
   def test_update(self):
     self.client.force_authenticate(

@@ -34,10 +34,12 @@ class DailyValueViewSet(OwnerUpdateViewSet):
 
 class IntakeViewSet(viewsets.ModelViewSet):
   serializer_class = IntakeSerializer
-  queryset = Intake.objects.all() # TODO: current user only
 
   def get_permissions(self):
     return get_perms(self.action, OWNER_ACTIONS)
+
+  def get_queryset(self):
+    return Intake.objects.filter(user=self.request.user)
 
 class NameViewSet(OwnerUpdateViewSet):
   serializer_class = NameSerializer
@@ -49,10 +51,12 @@ class NutrientViewSet(OwnerUpdateViewSet):
 
 class TargetViewSet(viewsets.ModelViewSet):
   serializer_class = TargetSerializer
-  queryset = Target.objects.all() # TODO: current user only
 
   def get_permissions(self):
     return get_perms(self.action, OWNER_ACTIONS)
+
+  def get_queryset(self):
+    return Target.objects.filter(user=self.request.user)
 
 class UnitViewSet(OwnerUpdateViewSet):
   serializer_class = UnitSerializer
