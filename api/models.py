@@ -16,7 +16,7 @@ class UserProtect(models.Model):
 class Name(UserProtect):
   name = models.CharField(unique=True, max_length=200) # TODO: case insensitive
   abbreviation = models.CharField(max_length=15)
-  plural = models.CharField(max_length=50)
+  plural = models.CharField(max_length=200)
 
   def __str__(self):
     return f'{self.name} ({self.abbreviation})'
