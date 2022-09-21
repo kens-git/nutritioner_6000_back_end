@@ -34,6 +34,7 @@ class Nutrient(UserProtect):
   description = models.TextField(blank=True)
   unit = models.ForeignKey(
     Unit, on_delete=models.PROTECT, related_name='nutrient_unit')
+  is_macronutrient = models.BooleanField(default=False)
 
   def __str__(self):
     return f'{self.name} ({self.unit})'
