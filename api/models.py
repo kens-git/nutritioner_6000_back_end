@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 
+# TODO: separate files
 class UserCascade(models.Model):
   user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -39,13 +40,6 @@ class Nutrient(UserProtect):
   def __str__(self):
     return f'{self.name} ({self.unit})'
 
-class DailyValue(UserProtect):
-  nutrient = models.ForeignKey(Nutrient, on_delete=models.PROTECT)
-  value = models.FloatField()
-
-  def __str__(self):
-    return f'{self.nutrient} ({self.value})'
-
 class ConsumableCategory(UserProtect):
   name = models.OneToOneField(Name, on_delete=models.PROTECT)
   description = models.TextField(blank=True)
@@ -56,6 +50,12 @@ class ConsumableCategory(UserProtect):
 class ConsumableNutrient(UserProtect):
   nutrient = models.ForeignKey(Nutrient, on_delete=models.PROTECT)
   value = models.FloatField()
+
+  def __str__(self):
+    return f'{self.nutrient} ({self.value})'
+
+class DailyValue(UserProtect):
+  nutrients = models.ManyToManyField(ConsumableNutrient)
 
   def __str__(self):
     return f'{self.nutrient} ({self.value})'
