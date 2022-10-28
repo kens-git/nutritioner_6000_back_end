@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.forms.models import model_to_dict
+from django.shortcuts import render
 from rest_framework import mixins, status, viewsets
 from rest_framework.authtoken import views
 from rest_framework.authtoken.models import Token
@@ -89,3 +90,6 @@ class ObtainTokenView(views.ObtainAuthToken):
     user = serializer.validated_data['user']
     token, created = Token.objects.get_or_create(user=user)
     return Response({'token': token.key, 'user_id': user.pk})
+
+def index(request):
+  return render(request, 'index.html')

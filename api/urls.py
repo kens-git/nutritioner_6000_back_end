@@ -1,12 +1,11 @@
 from django.urls import path
 from rest_framework import routers
-from rest_framework.authtoken import views
 from .views import (ConsumableViewSet, ConsumableCategoryViewSet,
   ConsumableNutrientViewSet, DailyValueViewSet, IntakeViewSet,
-  NameViewSet, NutrientViewSet, TargetViewSet, UnitViewSet)
+  NameViewSet, NutrientViewSet, ObtainTokenView, TargetViewSet, UnitViewSet)
 
 urlpatterns = [
-  path('login', views.obtain_auth_token)
+  path('login', ObtainTokenView.as_view())
 ]
 # TODO: logout?
 router = routers.SimpleRouter()
